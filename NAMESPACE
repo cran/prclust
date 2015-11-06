@@ -1,0 +1,7 @@
+useDynLib(prclust)
+export(PRclust,GCV,clusterStat)
+importFrom("stats", "coefficients", "lm", "rnorm")
+import(parallel)
+importFrom(Rcpp, evalCpp)
+S3method(print, prclust)
+S3method(print, clusterStat)
