@@ -12,8 +12,8 @@ Clustering analysis is widely used in many fields. Traditionally clustering is r
 \tabular{ll}{
 Package: \tab prclust\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2015-10-30\cr
+Version: \tab 1.1\cr
+Date: \tab 2015-11-11\cr
 License: \tab GPL-2 | GPL-3\cr
 }
 }

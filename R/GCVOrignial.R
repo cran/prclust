@@ -68,7 +68,7 @@ GCV <- function(data,lambda1,lambda2,tau,sigma,B=100,loss.method = c("quadratic"
 
 
     res = mclapply(1:B,GDF.Step23,data = data,lambda1 = lambda1,lambda2 = lambda2,
-    tau = tau, mumethods = mumethods, methods = methods,sigma = sigma,algorithm = algorithm,epsilon = epsilon)
+    tau = tau, mumethods = mumethods, methods = methods,sigma = sigma,algorithm = nalgorithm,epsilon = epsilon)
     nrows = dim(data)[1]
     ncols = dim(data)[2]
     num = nrows * ncols

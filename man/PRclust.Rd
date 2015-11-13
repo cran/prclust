@@ -83,12 +83,6 @@ tau = 0.5
 a =PRclust(data,lambda1,lambda2,tau)
 a
 
-## quadratic penalty
-lambda1 =1
-lambda2 = 1
-tau = 0.5
-a =PRclust(data ,lambda1,lambda2,tau, algorithm ="Quadratic")
-a
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
