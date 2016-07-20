@@ -1,6 +1,4 @@
 \name{prclust-package}
-\alias{prclust-package}
-\alias{prclust}
 \docType{package}
 \title{
 Penalized Regression Based Cluster Method
@@ -12,25 +10,24 @@ Clustering analysis is widely used in many fields. Traditionally clustering is r
 \tabular{ll}{
 Package: \tab prclust\cr
 Type: \tab Package\cr
-Version: \tab 1.1\cr
-Date: \tab 2015-11-11\cr
+Version: \tab 1.2\cr
+Date: \tab 2016-7-18\cr
 License: \tab GPL-2 | GPL-3\cr
 }
 }
 \author{
 Chong Wu, Wei Pan\cr
-Maintainer: Chong Wu <chongwu@umn.edu>
+Maintainer: Chong Wu <wuxx0845@umn.edu>
 }
 \references{
 Pan Wei, Xiaotong Shen, and Binghui Liu. "Cluster Analysis: Unsupervised Learning via Supervised Learning with a Non-convex Penalty." \emph{The Journal of Machine Learning Research} 14.1 (2013):1865-1889.
 
 Chong Wu, Sunghoon Kwon, Xiaotong Shen and Wei Pan. "A new Algorithm and Theory for Penalized Regression-based Clustering", submitted. 
 }
-\keyword{ prclust-package }
 \examples{
 ## In default, we use DC-ADMM, a faster algorithm to solve 
 ## the objective function and get the clustering result.
-library("prclust")
+
 ## generate the data
 data = matrix(NA,2,100)
 data[1,1:50] = rnorm(50,0,0.33)
@@ -39,7 +36,7 @@ data[1,51:100] = rnorm(50,1,0.33)
 data[2,51:100] = rnorm(50,1,0.33)
 
 # clustering via PRclsut 
-a =PRclust(data,lambda1=0.4,lambda2=1,tau=0.5)
+a =PRclust(data,rho=0.4,lambda=1,tau=0.5)
 a$mu
 a$group
 }

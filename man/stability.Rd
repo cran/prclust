@@ -1,16 +1,16 @@
-\name{GCV}
-\alias{GCV}
+\name{stability}
+\alias{stability}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Calculate the Generalized Cross-Validation Statistic (GCV)}
+\title{Calculate the stability based statistics}
 \description{
-Calculate the generalized cross-validation statistic with generalized degrees of freedom. We try with various tuning parameter values, obtaining their corresponding GDFs and thus GCV statistics, then choose the set of the tuning parameters with the minimum GCV statistic.
+Calculate the  the stability based statistics. We try with various tuning parameter values, obtaining their corresponding statbility based statistics average prediction strengths, then choose the set of the tuning parameters with the maximum average prediction stength.
 }
 \usage{
-GCV(data,rho,lambda,tau,sigma,B=100,
+stability(data,rho,lambda,tau,
     loss.function = c("quadratic","L1"),
     grouping.penalty = c("gtlp","tlp"), 
     algorithm = c("DCADMM","Quadratic"),
-    abs_res = 0.5,rel_res = 0.5)
+    abs_res = 0.5,rel_res = 0.5,n.times = 10)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -27,13 +27,6 @@ GCV(data,rho,lambda,tau,sigma,B=100,
   \item{tau}{
   	 Tuning parameter: tau, a nonnegative tuning parameter controll ing the trade-off between the model fit and the number of clusters.
 }
-  \item{sigma}{
-  	 The perturbation size.
-  }
-  \item{B}{
-  	 The Monte Carlo time. The defualt value is 100.
-  }
-
 \item{loss.function }{
       The loss function. "L1" stands for \eqn{L_1} loss function, while "quadratic" stands for the quadratic loss function.  
 }
@@ -47,24 +40,25 @@ GCV(data,rho,lambda,tau,sigma,B=100,
 }
 \item{rel_res}{Dual residual, the stopping critetion parameter corresponding to DC-ADMM. The default is 0.5.
 }
+\item{n.times}{Repeat times. Based on our limited simulations, we find 10 is usually good enough.}
 }
 
 \details{
-A bonus with the regression approach to clustering is the potential application of many existing model selection methods for regression or supervised learning to clustering. We propose using generalized cross-validation (GCV). GCV can be regarded as an approximation to leave-one-out cross-validation (CV). Hence, GCV provides an approximately unbiased estimate of the prediction error.
+A generalized degrees of freedom (GDF) together with generalized cross validation (GCV) was proposed for selection of tuning parameters for clustering (Pan et al., 2013). This method, while yielding good performance, requires extensive computation and specification of a hyper-parameter perturbation size. Here, we provide an alternative by modifying a stability-based criterion (Tibshirani and Walther, 2005; Liu et al., 2016) for determining the tuning parameters.
 
-We use the generalized degrees of freedom (GDF) to consider the data-adaptive nature in estimating the centroids of the observations.
+The main idea of the method is based on cross-validation. That is, (1) randomly partition the entire data set into a training set and a test set with an almost equal size; (2) cluster the training and test sets separately via PRclust with the same tuning parameters; (3) measure how well the training set clusters predict the test clusters.
 
-The chosen tuning parameters are the one giving the smallest GCV error.
+We try with various tuning parameter values, obtaining their corresponding statbility based statistics average prediction strengths, then choose the set of the tuning parameters with the maximum average prediction stength.
 }
 \value{
-Return value: the Generalized cross-validation statistic (GCV)
+Return value: the average prediction score.
 }
 
 \references{
-Pan Wei, Xiaotong Shen, and Binghui Liu. "Cluster Analysis: Unsupervised Learning via Supervised Learning with a Non-convex Penalty." \emph{The Journal of Machine Learning Research} 14.1 (2013):1865-1889.
+Chong Wu, Sunghoon Kwon, Xiaotong Shen and Wei Pan. "A new Algorithm and Theory for Penalized Regression-based Clustering", submitted.
 }
 \author{
-Chong Wu, Wei Pan
+Chong Wu
 }
 \examples{
 set.seed(1)
@@ -76,17 +70,16 @@ data[1,26:50] = rnorm(25,1,0.33)
 data[2,26:50] = rnorm(25,1,0.33)
 
 #case 1
-gcv1 = GCV(data,rho=1,lambda=1,tau=0.5,sigma=0.25,B =10)
-gcv1
+stab1 = stability(data,rho=1,lambda=1,tau=0.5,n.times = 2)
+stab1
 
 #case 2
-gcv2 = GCV(data,rho=1,lambda=0.7,tau=0.3,sigma=0.25,B = 10)
-gcv2
-
+stab2 = stability(data,rho=1,lambda=0.7,tau=0.3,n.times = 2)
+stab2
 # Note that the combination of tuning parameters in case 1 are better than 
 # the combination of tuning parameters in case 2 since the value of GCV in case 1 is
 # less than the value in case 2.
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{GCV}
+\keyword{stability}
