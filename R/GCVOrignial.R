@@ -2,14 +2,15 @@
 ## general degree of freedom and GCV
 ###################################
 
-GDF.Step23 <- function(seed,data,lambda1,lambda2,tau,mumethods, methods,sigma,algorithm,abs_res,rel_res)
+GDF.Step23 <- function(seed,data,lambda1,lambda2,tau,mumethods, methods,sigma,algorithm,epsilon)
 {
     set.seed(seed) ## Set the random seed for this simulation
     # peturbation of data
     deltaB = matrix(rnorm(dim(data)[1]*dim(data)[2],0,sigma),dim(data)[1],dim(data)[2])
     data1 = data + deltaB
     if (algorithm == 1){
-        a = .Call('prclust_DCADMM', PACKAGE = 'prclust', data1, lambda1, lambda2, tau, abs_res, rel_res, mumethods, methods)
+        rho = lambda1
+        a = .Call('prclust_PRclustADMM', PACKAGE = 'prclust', data1, rho, lambda2, tau, mumethods, methods,epsilon)
     } else {
         a =    .Call('prclust_PRclustOriginal', PACKAGE = 'prclust', data1, lambda1, lambda2, tau,mumethods, methods)
 
@@ -25,29 +26,27 @@ GDF.Step23 <- function(seed,data,lambda1,lambda2,tau,mumethods, methods,sigma,al
 
 ##########################################
 
-GCV <- function(data,rho,lambda,tau,sigma,B=100,loss.function = c("quadratic","L1"),grouping.penalty = c("gtlp","tlp"), algorithm = c("DCADMM","Quadratic"),abs_res = 0.5,rel_res = 0.5)
-{
-    ## judge for different situation
-    mumethods = switch(match.arg(loss.function), `quadratic` = 0,L1 = 1)
-    methods = switch(match.arg(grouping.penalty), `gtlp` = 0,tlp = 1)
-    nalgorithm = switch(match.arg(algorithm), `DCADMM` = 1,Quadratic = 2)
-    lambda1 = rho
-    lambda2 = lambda
+GCV <- function(data,lambda1,lambda2,tau,sigma,B=100,loss.method = c("quadratic","lasso"),grouping.penalty = c("gtlp","L1","SCAD","MCP"), algorithm = c("ADMM","Quadratic"), epsilon = 0.001)
+{   ## judge for different situation
+    mumethods = switch(match.arg(loss.method), `quadratic` = 0,lasso = 1)
+    methods = switch(match.arg(grouping.penalty), `gtlp` = 0,L1 = 1, MCP = 2, SCAD = 3)
+    nalgorithm = switch(match.arg(algorithm), `ADMM` = 1,Quadratic = 2)
+    
     if(is.character(lambda1))
     stop("lambda1 must be a number")
     if(is.character(sigma))
-    stop("sigma must be a postive number")
+    stop("sigma must be a number")
     if(is.character(B))
-    stop("B must be a postive number")
+    stop("B must be a number")
     if(is.character(lambda2))
-    stop("lambda must be a number")
+    stop("lambda2 must be a number")
     if(is.character(tau))
     stop("tau must be a number")
     
     if(lambda1<0 | is.na(lambda1))
-    stop("rho must be a postive number.")
-    if(lambda<0 | is.na(lambda2))
-    stop("lambda must be a postive number.")
+    stop("lambda1 must be a postive number.")
+    if(lambda2<0 | is.na(lambda2))
+    stop("lambda2 must be a postive number.")
     if(tau<0 | is.na(tau))
     stop("tau must be a postive number.")
     if(sigma<0 | is.na(sigma))
@@ -58,17 +57,18 @@ GCV <- function(data,rho,lambda,tau,sigma,B=100,loss.function = c("quadratic","L
     B = as.integer(B)
     data = as.matrix(data)
     if(sum(is.na(data)))
-    stop("Clustering data contains NA or character value. The current version does not support missing data.")
+    stop("Clustering data contains NA or character value. The current version does not support missing data situation.")
     
     ##require("multicore")
     if( nalgorithm ==2) {
-        if (mumethods!= 0) {
+        if (mumethods!= 0 || methods >=2) {
             stop("Quadtraic penalty based algorithm cannot deal with the selected objective function. You can try ADMM instead.")
         }
     }
 
+
     res = mclapply(1:B,GDF.Step23,data = data,lambda1 = lambda1,lambda2 = lambda2,
-    tau = tau, mumethods = mumethods, methods = methods,sigma = sigma,algorithm = nalgorithm,abs_res = abs_res,rel_res = rel_res)
+    tau = tau, mumethods = mumethods, methods = methods,sigma = sigma,algorithm = nalgorithm,epsilon = epsilon)
     nrows = dim(data)[1]
     ncols = dim(data)[2]
     num = nrows * ncols
@@ -92,11 +92,12 @@ GCV <- function(data,rho,lambda,tau,sigma,B=100,loss.function = c("quadratic","L
     }
     
     GDF = sum(slope)
+    
     ## calculate the original mu
     if (nalgorithm == 1){
         rho = lambda1
-        a = .Call('prclust_DCADMM', PACKAGE = 'prclust', data, rho, lambda2, tau, abs_res, rel_res, mumethods, methods)
-  } else {
+        a = .Call('prclust_PRclustADMM', PACKAGE = 'prclust', data, rho, lambda2, tau,mumethods, methods,epsilon)
+    } else {
         a =    .Call('prclust_PRclustOriginal', PACKAGE = 'prclust', data, lambda1, lambda2, tau, mumethods, methods)
         
     }

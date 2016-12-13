@@ -7,10 +7,10 @@ Calculate the  the stability based statistics. We try with various tuning parame
 }
 \usage{
 stability(data,rho,lambda,tau,
-    loss.function = c("quadratic","L1"),
+    loss.function = c("quadratic","L1","MCP","SCAD"),
     grouping.penalty = c("gtlp","tlp"), 
     algorithm = c("DCADMM","Quadratic"),
-    abs_res = 0.5,rel_res = 0.5,n.times = 10)
+    epsilon = 0.001,n.times = 10)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -30,15 +30,12 @@ stability(data,rho,lambda,tau,
 \item{loss.function }{
       The loss function. "L1" stands for \eqn{L_1} loss function, while "quadratic" stands for the quadratic loss function.  
 }
-  \item{grouping.penalty}{
-    Grouping penalty: "gtlp" is the group truncated lasso peanlty, while "tlp" is the truncated lasso. Note that when tau is large, "gtlp" and "tlp" are the $L_2$ penalty and lasso penalty, respectively.
+  \item{grouping.penalty}{Grouping penalty. Character: may be abbreviated. "gtlp" means generalized group lasso is used for grouping penalty. "lasso" means lasso is used for grouping penalty. "SCAD" and "MCP" are two other non-convex penalty.
 }
   \item{algorithm}{
   Two algorithms for PRclust. "DC-ADMM" and "Quadratic" stand for the DC-ADMM and quadratic penalty based criterion respectively. "DC-ADMM" is much faster than "Quadratic" and thus recommend it here. 
 }
-\item{abs_res}{Primal residual, the stopping critetion parameter corresponding to DC-ADMM. The default is 0.5.
-}
-\item{rel_res}{Dual residual, the stopping critetion parameter corresponding to DC-ADMM. The default is 0.5.
+\item{epsilon}{The stopping critetion parameter corresponding to DC-ADMM. The default is 0.001.
 }
 \item{n.times}{Repeat times. Based on our limited simulations, we find 10 is usually good enough.}
 }
@@ -55,7 +52,7 @@ Return value: the average prediction score.
 }
 
 \references{
-Chong Wu, Sunghoon Kwon, Xiaotong Shen and Wei Pan. "A new Algorithm and Theory for Penalized Regression-based Clustering", submitted.
+Wu, C., Kwon, S., Shen, X., & Pan, W. (2016). A New Algorithm and Theory for Penalized Regression-based Clustering. \emph{Journal of Machine Learning Research}, 17(188), 1-25.
 }
 \author{
 Chong Wu

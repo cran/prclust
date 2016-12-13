@@ -77,92 +77,20 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// cal_primalInterValue
-double cal_primalInterValue(NumericMatrix mu, int ndim, int numbers);
-RcppExport SEXP prclust_cal_primalInterValue(SEXP muSEXP, SEXP ndimSEXP, SEXP numbersSEXP) {
+// PRclustADMM
+List PRclustADMM(NumericMatrix data, double rho, double lambda2, double tau, int mumethod, int methods, double epsilon);
+RcppExport SEXP prclust_PRclustADMM(SEXP dataSEXP, SEXP rhoSEXP, SEXP lambda2SEXP, SEXP tauSEXP, SEXP mumethodSEXP, SEXP methodsSEXP, SEXP epsilonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< int >::type ndim(ndimSEXP);
-    Rcpp::traits::input_parameter< int >::type numbers(numbersSEXP);
-    __result = Rcpp::wrap(cal_primalInterValue(mu, ndim, numbers));
-    return __result;
-END_RCPP
-}
-// cal_primalInterValue2
-double cal_primalInterValue2(NumericMatrix theta, int ndim, int numbers);
-RcppExport SEXP prclust_cal_primalInterValue2(SEXP thetaSEXP, SEXP ndimSEXP, SEXP numbersSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< int >::type ndim(ndimSEXP);
-    Rcpp::traits::input_parameter< int >::type numbers(numbersSEXP);
-    __result = Rcpp::wrap(cal_primalInterValue2(theta, ndim, numbers));
-    return __result;
-END_RCPP
-}
-// cal_relResInterValue
-double cal_relResInterValue(NumericMatrix u, double rho, int ndim, int numbers);
-RcppExport SEXP prclust_cal_relResInterValue(SEXP uSEXP, SEXP rhoSEXP, SEXP ndimSEXP, SEXP numbersSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type u(uSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
-    Rcpp::traits::input_parameter< int >::type ndim(ndimSEXP);
-    Rcpp::traits::input_parameter< int >::type numbers(numbersSEXP);
-    __result = Rcpp::wrap(cal_relResInterValue(u, rho, ndim, numbers));
-    return __result;
-END_RCPP
-}
-// cal_primalRes
-double cal_primalRes(NumericMatrix mu, NumericMatrix theta, int ndim, int numbers);
-RcppExport SEXP prclust_cal_primalRes(SEXP muSEXP, SEXP thetaSEXP, SEXP ndimSEXP, SEXP numbersSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< int >::type ndim(ndimSEXP);
-    Rcpp::traits::input_parameter< int >::type numbers(numbersSEXP);
-    __result = Rcpp::wrap(cal_primalRes(mu, theta, ndim, numbers));
-    return __result;
-END_RCPP
-}
-// cal_dualRes
-double cal_dualRes(NumericMatrix theta, NumericMatrix theta1, double rho, int ndim, int numbers);
-RcppExport SEXP prclust_cal_dualRes(SEXP thetaSEXP, SEXP theta1SEXP, SEXP rhoSEXP, SEXP ndimSEXP, SEXP numbersSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type theta1(theta1SEXP);
-    Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
-    Rcpp::traits::input_parameter< int >::type ndim(ndimSEXP);
-    Rcpp::traits::input_parameter< int >::type numbers(numbersSEXP);
-    __result = Rcpp::wrap(cal_dualRes(theta, theta1, rho, ndim, numbers));
-    return __result;
-END_RCPP
-}
-// stopping_criteria2
-int stopping_criteria2(NumericMatrix mu, NumericMatrix theta, NumericMatrix theta1, NumericMatrix u, double rho, double abs_res, double rel_res, int ndim, int numbers, int count);
-RcppExport SEXP prclust_stopping_criteria2(SEXP muSEXP, SEXP thetaSEXP, SEXP theta1SEXP, SEXP uSEXP, SEXP rhoSEXP, SEXP abs_resSEXP, SEXP rel_resSEXP, SEXP ndimSEXP, SEXP numbersSEXP, SEXP countSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type theta1(theta1SEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type u(uSEXP);
-    Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
-    Rcpp::traits::input_parameter< double >::type abs_res(abs_resSEXP);
-    Rcpp::traits::input_parameter< double >::type rel_res(rel_resSEXP);
-    Rcpp::traits::input_parameter< int >::type ndim(ndimSEXP);
-    Rcpp::traits::input_parameter< int >::type numbers(numbersSEXP);
-    Rcpp::traits::input_parameter< int >::type count(countSEXP);
-    __result = Rcpp::wrap(stopping_criteria2(mu, theta, theta1, u, rho, abs_res, rel_res, ndim, numbers, count));
+    Rcpp::traits::input_parameter< double >::type lambda2(lambda2SEXP);
+    Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
+    Rcpp::traits::input_parameter< int >::type mumethod(mumethodSEXP);
+    Rcpp::traits::input_parameter< int >::type methods(methodsSEXP);
+    Rcpp::traits::input_parameter< double >::type epsilon(epsilonSEXP);
+    __result = Rcpp::wrap(PRclustADMM(data, rho, lambda2, tau, mumethod, methods, epsilon));
     return __result;
 END_RCPP
 }
@@ -233,22 +161,6 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// judge_iteration2
-int judge_iteration2(NumericMatrix PRmu, NumericMatrix mu, double epsilon, int ndim, int numbers, int count);
-RcppExport SEXP prclust_judge_iteration2(SEXP PRmuSEXP, SEXP muSEXP, SEXP epsilonSEXP, SEXP ndimSEXP, SEXP numbersSEXP, SEXP countSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type PRmu(PRmuSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type epsilon(epsilonSEXP);
-    Rcpp::traits::input_parameter< int >::type ndim(ndimSEXP);
-    Rcpp::traits::input_parameter< int >::type numbers(numbersSEXP);
-    Rcpp::traits::input_parameter< int >::type count(countSEXP);
-    __result = Rcpp::wrap(judge_iteration2(PRmu, mu, epsilon, ndim, numbers, count));
-    return __result;
-END_RCPP
-}
 // PRclustOriginal
 List PRclustOriginal(NumericMatrix data, double lambda1, double lambda2, double tau, int mumethod, int methods);
 RcppExport SEXP prclust_PRclustOriginal(SEXP dataSEXP, SEXP lambda1SEXP, SEXP lambda2SEXP, SEXP tauSEXP, SEXP mumethodSEXP, SEXP methodsSEXP) {
@@ -262,42 +174,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type mumethod(mumethodSEXP);
     Rcpp::traits::input_parameter< int >::type methods(methodsSEXP);
     __result = Rcpp::wrap(PRclustOriginal(data, lambda1, lambda2, tau, mumethod, methods));
-    return __result;
-END_RCPP
-}
-// cal_S_ADMM
-double cal_S_ADMM(NumericMatrix data, NumericMatrix theta, NumericMatrix theta2, NumericMatrix mu, double lambda2, double tau, int ndim, int numbers);
-RcppExport SEXP prclust_cal_S_ADMM(SEXP dataSEXP, SEXP thetaSEXP, SEXP theta2SEXP, SEXP muSEXP, SEXP lambda2SEXP, SEXP tauSEXP, SEXP ndimSEXP, SEXP numbersSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type theta2(theta2SEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< double >::type lambda2(lambda2SEXP);
-    Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< int >::type ndim(ndimSEXP);
-    Rcpp::traits::input_parameter< int >::type numbers(numbersSEXP);
-    __result = Rcpp::wrap(cal_S_ADMM(data, theta, theta2, mu, lambda2, tau, ndim, numbers));
-    return __result;
-END_RCPP
-}
-// DCADMM
-List DCADMM(NumericMatrix data, double rho, double lambda2, double tau, double abs_res, double rel_res, int mumethod, int methods);
-RcppExport SEXP prclust_DCADMM(SEXP dataSEXP, SEXP rhoSEXP, SEXP lambda2SEXP, SEXP tauSEXP, SEXP abs_resSEXP, SEXP rel_resSEXP, SEXP mumethodSEXP, SEXP methodsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
-    Rcpp::traits::input_parameter< double >::type lambda2(lambda2SEXP);
-    Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< double >::type abs_res(abs_resSEXP);
-    Rcpp::traits::input_parameter< double >::type rel_res(rel_resSEXP);
-    Rcpp::traits::input_parameter< int >::type mumethod(mumethodSEXP);
-    Rcpp::traits::input_parameter< int >::type methods(methodsSEXP);
-    __result = Rcpp::wrap(DCADMM(data, rho, lambda2, tau, abs_res, rel_res, mumethod, methods));
     return __result;
 END_RCPP
 }

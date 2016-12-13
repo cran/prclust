@@ -1,12 +1,10 @@
-stability<- function(data, rho,lambda, tau,loss.function = c("quadratic","L1"),grouping.penalty = c("gtlp","tlp"), algorithm = c("DCADMM","Quadratic"), abs_res = 0.5,rel_res = 0.5,n.times = 10) {
+stability<- function(data, rho,lambda, tau,loss.function = c("quadratic","L1","MCP","SCAD"),grouping.penalty = c("gtlp","tlp"), algorithm = c("DCADMM","Quadratic"), epsilon = 0.001,n.times = 10) {
     
     
-    lambda1 = rho
-    lambda2 = lambda
     
     ## judge for different situation
     mumethod = switch(match.arg(loss.function), `quadratic` = 0,L1 = 1)
-    methods = switch(match.arg(grouping.penalty), `gtlp` = 0,tlp = 1)
+    methods = switch(match.arg(grouping.penalty), `gtlp` = 0,L1 = 1, MCP = 2, SCAD = 3)
     nalgorithm = switch(match.arg(algorithm), `DCADMM` = 1,Quadratic = 2)
     lambda1 = rho
     if(is.character(lambda1))
@@ -50,11 +48,13 @@ stability<- function(data, rho,lambda, tau,loss.function = c("quadratic","L1"),g
         })
         
         if( nalgorithm ==1){
-            a = .Call('prclust_DCADMM', PACKAGE = 'prclust', data.tr, rho, lambda, tau, abs_res , rel_res,mumethod, methods )
+            a = .Call('prclust_PRclustADMM', PACKAGE = 'prclust', data.tr, rho, lambda, tau,mumethod, methods,epsilon)
+            #a = .Call('prclust_DCADMM', PACKAGE = 'prclust', data.tr, rho, lambda, tau, abs_res , rel_res,mumethod, methods )
             tr.res  = as.matrix(a$group)
-            tmp = tr.res[testtr.index,]
             
-            a = .Call('prclust_DCADMM', PACKAGE = 'prclust', data.test, rho, lambda, tau, abs_res , rel_res,mumethod, methods )
+            tmp = tr.res[testtr.index,]
+            a = .Call('prclust_PRclustADMM', PACKAGE = 'prclust', data.test, rho, lambda, tau,mumethod, methods,epsilon)
+            #a = .Call('prclust_DCADMM', PACKAGE = 'prclust', data.test, rho, lambda, tau, abs_res , rel_res,mumethod, methods )
         } else {
             if (mumethod!= 0) {
                 stop("Quadtraic penalty based algorithm cannot deal with the selected objective function. You can try ADMM instead.")
